@@ -44,6 +44,40 @@ Setting I (w/o Nature): ```python test_sirs.py --inet dsrnet_l --model dsrnet_mo
 
 Setting II (w/ Nature): ```python test_sirs.py --inet dsrnet_l_nature --model dsrnet_model_sirs --dataset sirs_dataset  --name dsrnet_l_4000_test --hyper --if_align --resume --weight_path "./weights/dsrnet_l_4000_epoch33.pt" --base_dir "[YOUR_DATA_DIR]"```
 
+### Inference with `inference.py`
+
+For running inference on a single image to separate transmission and reflection layers, use the `inference.py` script.
+
+**Command Structure:**
+
+```bash
+python inference.py --image_path <path_to_your_image> --output_dir <directory_for_results> [options]
+```
+
+**Arguments:**
+
+*   `--image_path` (or `-i`): (Required) Path to the input image file (e.g., `my_image.jpg`).
+*   `--output_dir` (or `-o`): (Required) Directory where result subfolders will be saved. A subfolder named `inference_run` (based on `opt.name`) will be created inside this directory, and it will contain the output images (e.g., `<original_filename>_l.png`, `<original_filename>_s.png`).
+*   `--checkpoint_path` (optional): Path to the model checkpoint file.
+    *   Default: `weights/dsrnet_s_epoch14.pt`
+*   `--inet_arch` (optional): The DSRNet architecture variant to use (e.g., `dsrnet_s`, `dsrnet_l`).
+    *   Default: `dsrnet_s`
+    *   **Important:** Ensure the architecture matches the loaded checkpoint file.
+
+**Reminder:**
+
+Ensure you have downloaded the model checkpoints into the `weights/` directory as mentioned in the "Trained weights" section below. The default checkpoint `weights/dsrnet_s_epoch14.pt` should exist, or you must provide a valid path using `--checkpoint_path`.
+
+**Example Command:**
+
+```bash
+python inference.py --image_path ./data/real_test.txt --output_dir ./inference_results --checkpoint_path weights/dsrnet_l_epoch18.pt --inet_arch dsrnet_l
+```
+Note: The example above uses `real_test.txt` which is not an image; replace `./data/real_test.txt` with an actual image path like `./my_image.jpg` or an image from the test datasets. For instance:
+```bash
+python inference.py -i ./path/to/your/image.png -o ./inference_output --checkpoint_path weights/dsrnet_s_epoch14.pt --inet_arch dsrnet_s
+```
+
 #### Trained weights
 
 Download the trained weights by [Google Drive](https://drive.google.com/drive/folders/1AIS9-EgBN3_q-TCq7W0j5OeWMgLO_de0?usp=sharing) or [百度云](https://pan.baidu.com/s/17jW9oBAfIZ03FKa3jc-qig?pwd=1231) and drop them into the "weights" dir.
